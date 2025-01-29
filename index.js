@@ -1,7 +1,5 @@
-#!/usr/bin/env node
-
-import { spawn } from 'child_process';
-import { input } from '@inquirer/prompts';
+const { spawn } = require('child_process');
+const { input } = require('@inquirer/prompts');
 
 function spawnAsync(command, args) {
     return new Promise(function (resolve, reject) {
