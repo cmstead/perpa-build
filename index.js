@@ -1,15 +1,26 @@
-import { exec } from 'child_process';
-import { promisify } from 'util';
-
+import { spawn } from 'child_process';
 import { input } from '@inquirer/prompts';
 
-const execAsync = promisify(exec);
+function spawnAsync(command, args, options) {
+    return new Promise(function (resolve, reject) {
+        const child = spawn(command, args, options);
 
-execAsync('npm run build')
-    .then(() => execAsync('git add --all'))
-    .then(input({
+        child.on('exit', function (code) {
+            if (code === 0) {
+                resolve();
+            } else {
+                reject(`Exited with code ${code}`);
+            }
+        });
+
+    })
+}
+
+spawnAsync('npm', ['run', 'build'], { stdio: 'inherit' })
+    .then(() => spawnAsync('git', ['add', '--all'], { stdio: 'inherit' }))
+    .then(() => input({
         message: 'Commit message',
     }))
-    .then((message) => execAsync(`git commit -m "${message}"`))
-    .then(() => execAsync('git push -u origin main'))
+    .then((message) => spawnAsync('git', ['commit', '-m', `"${message}"`], { stdio: 'inherit' }))
+    .then(() => spawnAsync('git', ['push', '-u', 'origin', 'main'], { stdio: 'inherit' }))
     .catch(console.error);
