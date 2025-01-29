@@ -1,9 +1,9 @@
 import { spawn } from 'child_process';
 import { input } from '@inquirer/prompts';
 
-function spawnAsync(command, args, options) {
+function spawnAsync(command, args) {
     return new Promise(function (resolve, reject) {
-        const child = spawn(command, args, options);
+        const child = spawn(command, args, { stdio: 'inherit' });
 
         child.on('exit', function (code) {
             if (code === 0) {
@@ -16,11 +16,11 @@ function spawnAsync(command, args, options) {
     })
 }
 
-spawnAsync('npm', ['run', 'build'], { stdio: 'inherit' })
-    .then(() => spawnAsync('git', ['add', '--all'], { stdio: 'inherit' }))
+spawnAsync('npm', ['run', 'build'])
+    .then(() => spawnAsync('git', ['add', '--all']))
     .then(() => input({
         message: 'Commit message',
     }))
-    .then((message) => spawnAsync('git', ['commit', '-m', `"${message}"`], { stdio: 'inherit' }))
-    .then(() => spawnAsync('git', ['push', '-u', 'origin', 'main'], { stdio: 'inherit' }))
+    .then((message) => spawnAsync('git', ['commit', '-m', `"${message}"`]))
+    .then(() => spawnAsync('git', ['push', '-u', 'origin', 'main']))
     .catch(console.error);
