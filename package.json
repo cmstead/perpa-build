@@ -1,0 +1,19 @@
+{
+  "name": "perpa-build",
+  "version": "1.0.0",
+  "description": "A build script for a friend",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "perpa-build": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo 'this is a fake build'"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@inquirer/prompts": "^7.2.4"
+  }
+}
