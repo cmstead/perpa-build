@@ -16,8 +16,7 @@ function spawnAsync(command, args) {
     })
 }
 
-spawnAsync('npm', ['run', 'build'])
-    .then(() => spawnAsync('git', ['add', '--all']))
+spawnAsync('git', ['add', '--all'])
     .then(() => input({
         message: 'Commit message',
     }))
